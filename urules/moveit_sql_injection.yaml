@@ -1,0 +1,16 @@
+id: moveit-sql-injection
+nom: "MOVEit Transfer SQLi (MITRE T1190 / T1485)"
+description: "Activité SQLi ou accès /api/v1/.../... inhabituels sur transfert de fichiers (CVE-2023-34362)"
+type: seuil
+condition:
+  field: "normalized_fields.process"
+  value: "moveit"
+  threshold: 5
+fenetre_temporelle_s: 60
+mitre_tactic: "T1190 - Exploit Public-Facing Application"
+mitre_technique_id: "T1190"
+niveau_alerte_genere: CRITICAL
+cve_references:
+  - CVE-2023-34362
+kill_chain_phase: "initial_access"
+active: true

@@ -1,0 +1,15 @@
+id: valid-accounts-abuse
+nom: "Abus de comptes valides (MITRE T1078)"
+description: "Authentifications réussies inhabituelles (géoloc, horaire, device)"
+type: seuil
+condition:
+  field: "normalized_fields.event_type"
+  value: "auth_anomaly"
+  threshold: 3
+fenetre_temporelle_s: 300
+mitre_tactic: "T1078 - Valid Accounts"
+mitre_technique_id: "T1078"
+niveau_alerte_genere: HIGH
+cve_references: []
+kill_chain_phase: "initial_access"
+active: true

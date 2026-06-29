@@ -1,0 +1,19 @@
+id: hafnium-exchange
+nom: "Hafnium (MITRE T1190 / T1059)"
+description: "Web shell /OWA ou ASPX inhabituels sur Exchange, suivi d'un webshell PowerShell"
+type: sequentielle
+condition:
+  steps:
+    - field: "normalized_fields.uri"
+      value: "/owa/"
+    - field: "normalized_fields.process"
+      value: "powershell"
+fenetre_temporelle_s: 600
+mitre_tactic: "T1190 - Exploit Public-Facing Application"
+mitre_technique_id: "T1190"
+niveau_alerte_genere: CRITICAL
+cve_references:
+  - CVE-2021-26855
+  - CVE-2021-27065
+kill_chain_phase: "initial_access"
+active: true

@@ -1,0 +1,17 @@
+id: log4shell-jndi-lookup
+nom: "Exploitation Log4Shell (MITRE T1190 / T1059)"
+description: "Chaîne JNDI lookup (${jndi:) détectée dans un champ HTTP/user-agent — exploitation Log4Shell"
+type: seuil
+condition:
+  field: "normalized_fields.raw_message"
+  value: "${jndi:"
+  threshold: 1
+fenetre_temporelle_s: 60
+mitre_tactic: "T1190 - Exploit Public-Facing Application"
+mitre_technique_id: "T1190"
+niveau_alerte_genere: CRITICAL
+cve_references:
+  - CVE-2021-44228
+  - CVE-2021-45046
+kill_chain_phase: "initial_access"
+active: true

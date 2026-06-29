@@ -1,0 +1,15 @@
+id: volt-typhoon-lotusblossom
+nom: "Volt Typhoon (MITRE T1078 / T1046)"
+description: "Activité de credential abuse + scan réseau interne long terme (living-off-the-land)"
+type: seuil
+condition:
+  field: "normalized_fields.process"
+  value: "ntdsutil"
+  threshold: 1
+fenetre_temporelle_s: 600
+mitre_tactic: "T1078 - Valid Accounts"
+mitre_technique_id: "T1078"
+niveau_alerte_genere: HIGH
+cve_references: []
+kill_chain_phase: "credential_access"
+active: true

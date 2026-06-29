@@ -1,0 +1,15 @@
+id: c2-beacon-application-layer
+nom: "Beacon C2 application layer (MITRE T1071)"
+description: "Connexions sortantes régulières vers même FQDN (beacon)"
+type: seuil
+condition:
+  field: "normalized_fields.event_type"
+  value: "c2_beacon"
+  threshold: 5
+fenetre_temporelle_s: 300
+mitre_tactic: "T1071 - Application Layer Protocol"
+mitre_technique_id: "T1071"
+niveau_alerte_genere: HIGH
+cve_references: []
+kill_chain_phase: "c2"
+active: true

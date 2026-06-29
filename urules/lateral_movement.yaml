@@ -1,0 +1,21 @@
+id: ssh-lateral-movement
+nom: "Mouvement Latéral — Connexion SSH depuis hôte interne compromis"
+description: |
+  Détecte une connexion SSH réussie depuis une machine interne vers une autre
+  machine interne, alors que ce type de connexion est inhabituel entre ces hôtes.
+  C'est la signature classique d'un mouvement latéral : l'attaquant pivote
+  de machine en machine après avoir compromis un premier hôte.
+  Référence : MITRE T1021.004 — Remote Services (SSH)
+type: séquence
+condition:
+  sequence:
+    - "login_success"
+    - "file_read"
+  group_by: "source_ip"
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0008"
+mitre_technique_id: "T1021"
+niveau_alerte_genere: CRITICAL
+confidence_score: 82
+kill_chain_phase: "lateral_movement"
+active: true

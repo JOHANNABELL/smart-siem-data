@@ -1,0 +1,17 @@
+id: proxyshell-exchange
+nom: "ProxyShell Exchange (MITRE T1190)"
+description: "Accès inhabituels aux endpoints Exchange Autodiscover/ews (CVE-2021-26858)"
+type: seuil
+condition:
+  field: "normalized_fields.uri"
+  value: "/autodiscover/autodiscover.json"
+  threshold: 5
+fenetre_temporelle_s: 60
+mitre_tactic: "T1190 - Exploit Public-Facing Application"
+mitre_technique_id: "T1190"
+niveau_alerte_genere: CRITICAL
+cve_references:
+  - CVE-2021-26858
+  - CVE-2021-27065
+kill_chain_phase: "initial_access"
+active: true

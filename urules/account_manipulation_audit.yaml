@@ -1,0 +1,15 @@
+id: account-manipulation-audit
+nom: "Manipulation de comptes (MITRE T1098)"
+description: "Modifications de comptes (ajout groupe admin, reset mdp, nouveau device) en chaîne"
+type: seuil
+condition:
+  field: "normalized_fields.event_type"
+  value: "account_manipulation"
+  threshold: 3
+fenetre_temporelle_s: 300
+mitre_tactic: "T1098 - Account Manipulation"
+mitre_technique_id: "T1098"
+niveau_alerte_genere: HIGH
+cve_references: []
+kill_chain_phase: "persistence"
+active: true

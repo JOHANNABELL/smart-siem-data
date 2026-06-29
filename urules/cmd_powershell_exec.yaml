@@ -1,0 +1,15 @@
+id: cmd-powershell-exec
+nom: "Commande PowerShell inhabituelle (MITRE T1059)"
+description: "Plusieurs exécutions PowerShell avec paramètres encodés (Base64, -enc, -nop)"
+type: seuil
+condition:
+  field: "normalized_fields.process"
+  value: "powershell"
+  threshold: 5
+fenetre_temporelle_s: 60
+mitre_tactic: "T1059 - Command and Scripting Interpreter"
+mitre_technique_id: "T1059"
+niveau_alerte_genere: WARNING
+cve_references: []
+kill_chain_phase: "execution"
+active: true

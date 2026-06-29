@@ -1,0 +1,144 @@
+# ================================================================================
+# SMART SIEM — Requirements Python
+# UCAC/ULC-ICAM — Projet transversal 2026
+# ================================================================================
+# Installation : pip install -r requirements.txt
+# Version Python requise : 3.11+
+# ================================================================================
+
+# ── Elasticsearch ────────────────────────────────────────────────────────────
+# Client officiel Python pour Elasticsearch 8.x
+# Fournit : Elasticsearch (sync) et AsyncElasticsearch (async)
+# Utilisé dans : 02_elasticsearch_setup.py, correlation_engine.py, log_generator.py
+elasticsearch==8.17.2
+
+# Helpers pour l'indexation bulk (bulk_index dans log_generator.py)
+# Inclus dans le package elasticsearch mais déclaré explicitement
+elastic-transport==8.17.0
+
+# ── PostgreSQL ────────────────────────────────────────────────────────────────
+# Client PostgreSQL asynchrone — compatible asyncio
+# Utilisé dans : correlation_engine.py, alert_router.py, init_rules.py
+asyncpg==0.30.0
+
+# ── API REST ──────────────────────────────────────────────────────────────────
+# Framework web Python moderne — génère automatiquement la doc Swagger
+# Utilisé dans : alert_router.py
+fastapi==0.115.12
+
+# Serveur ASGI pour FastAPI
+# Lancement : uvicorn alert_router:app --host 0.0.0.0 --port 8000
+uvicorn[standard]==0.34.2
+
+# Validation des données et des modèles (BaseModel dans alert_router.py)
+# Inclus comme dépendance de FastAPI mais déclaré pour la clarté
+pydantic==2.11.3
+
+# ── HTTP asynchrone ───────────────────────────────────────────────────────────
+# Client HTTP asynchrone pour les webhooks Slack/Teams et les notifications API
+# Utilisé dans : alert_router.py (send_slack_webhook), correlation_engine.py (notify_api)
+aiohttp
+#
+# ── Authentification et sécurité──────────────────────────────────────────────
+# Génération et validation des tokens JWT (JSON Web Token)
+# Utilisé dans : auth middleware (RBAC)
+python-jose[cryptography]==3.3.0
+
+# Hachage sécurisé des mots de passe (bcrypt, coût >= 12)
+# Utilisé dans : gestion des utilisateurs
+passlib[bcrypt]==4.3.0
+
+# Génération et validation des codes TOTP (MFA RFC 6238)
+# Compatible Google Authenticator, Authy, Microsoft Authenticator
+# Utilisé dans : authentification MFA
+pyotp==2.9.0
+
+# ── Base de données — utilitaires ─────────────────────────────────────────────
+# Pool de connexions synchrone PostgreSQL (pour les scripts non-async)
+# Utilisé dans : scripts d'administration, migrations
+psycopg2-binary==2.9.10
+
+# ── Traitement des données ────────────────────────────────────────────────────
+# Manipulation de données tabulaires (exports CSV/Excel)
+# Utilisé dans : génération des rapports et exports d'audit
+pandas==2.2.3
+
+# Génération de fausses données réalistes pour les logs simulés
+# Utilisé dans : extensions du log_generator.py
+Faker==37.1.0
+
+# ── Génération de rapports PDF ────────────────────────────────────────────────
+# Génération de rapports PDF automatiques (EF-21)
+# Utilisé dans : module de reporting
+reportlab==4.4.1
+
+# ── Exports Excel ─────────────────────────────────────────────────────────────
+# Lecture et écriture de fichiers Excel .xlsx (EF-22)
+# Utilisé dans : export des alertes et incidents pour audit
+openpyxl==3.1.5
+
+# ── Machine Learning — Module UEBA ────────────────────────────────────────────
+# Algorithmes ML : Isolation Forest, One-Class SVM, StandardScaler
+# Utilisé dans : worker UEBA (scoring de risque comportemental)
+scikit-learn==1.6.1
+
+# Calcul numérique haute performance (requis par scikit-learn)
+numpy==2.2.5
+
+# ── Scheduling et workers ─────────────────────────────────────────────────────
+# Planification des tâches cron (worker de rétention, worker UEBA)
+# Alternative légère à Celery pour des tâches périodiques simples
+APScheduler==3.11.0
+
+# ── Environnement et configuration ────────────────────────────────────────────
+# Chargement des variables d'environnement depuis un fichier .env
+# Permet de stocker les credentials sans les écrire dans le code
+python-dotenv==1.1.0
+
+# ── Logging avancé ────────────────────────────────────────────────────────────
+# Logs structurés en JSON — facilite l'intégration avec Kibana/ELK
+# Utilisé dans : tous les workers pour des logs parsables
+python-json-logger==3.3.0
+
+# ── Tests ─────────────────────────────────────────────────────────────────────
+# Framework de tests unitaires Python
+pytest==8.3.5
+
+# Extension pytest pour les tests asynchrones (asyncio)
+# Nécessaire pour tester les coroutines async/await
+pytest-asyncio==0.26.0
+
+# Client HTTP de test pour les endpoints FastAPI
+# Utilisé dans : tests des routes /api/v1/alerts, /internal/alert-triggered
+httpx==0.28.1
+
+# ── Utilitaires divers ────────────────────────────────────────────────────────
+# Gestion des dates et fuseaux horaires
+python-dateutil==2.9.0.post0
+
+# Requêtes HTTP synchrones (scripts utilitaires, vérifications)
+requests==2.32.3
+
+# Coloration de la sortie terminal pour les scripts d'administration
+colorama==0.4.6
+
+# ================================================================================
+# NOTES D'INSTALLATION
+# ================================================================================
+#
+# Sur le VPS Linux (Ubuntu 22.04) :
+#   pip3 install -r requirements.txt
+#
+# Sur Windows (développement) :
+#   "C:\Program Files\Python313\python.exe" -m pip install -r requirements.txt
+#
+# Avec un environnement virtuel (recommandé) :
+#   python -m venv venv
+#   source venv/bin/activate        (Linux/Mac)
+#   venv\Scripts\activate.bat       (Windows)
+#   pip install -r requirements.txt
+#
+# Vérification après installation :
+#   python -c "import elasticsearch, asyncpg, fastapi, sklearn; print('Tout OK')"
+#
+# ================================================================================

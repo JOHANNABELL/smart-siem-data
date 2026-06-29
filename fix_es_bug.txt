@@ -1,0 +1,29 @@
+x_es_bug.py
+C:\Users\HP\Desktop\UCAC-ICAM\X3\Projet Intégrateur\Data\venv\Lib\site-packages\requests\__init__.py:113: RequestsDependencyWarning: urllib3 (2.7.0) or chardet (7.4.3)/charset_normalizer (3.4.7) doesn't match a supported version!
+  warnings.warn(
+============================================================
+CORRECTIF — Bug _id fielddata — Smart SIEM
+============================================================
+
+[OK] Connecté à Elasticsearch 9.4.2
+
+[INFO] Valeur actuelle de indices.id_field_data.enabled : non défini (défaut = false)
+
+[ACTION] Application du correctif persistent...
+C:\Users\HP\Desktop\UCAC-ICAM\X3\Projet Intégrateur\Data\fix_es_bug.py:93: ElasticsearchWarning: [indices.id_field_data.enabled] setting was deprecated in Elasticsearch and will be removed in a future release. See the breaking changes documentation for the next major version.
+  response = await es.cluster.put_settings(
+[OK] Paramètre appliqué avec succès
+     indices.id_field_data.enabled = true (persistent)
+
+[VERIFY] Vérification du correctif par test d'agrégation réel...
+C:\Users\HP\Desktop\UCAC-ICAM\X3\Projet Intégrateur\Data\fix_es_bug.py:126: ElasticsearchWarning: Loading the fielddata on the _id field is deprecated and will be removed in future versions. If you require sorting or aggregating on this field you should also include the id in the body of your documents, and map this field as a keyword field that has [doc_values] enabled
+  test_resp = await es.search(
+[OK] Test agrégation _id réussi — 5 buckets retournés
+
+✅ CORRECTIF APPLIQUÉ ET VÉRIFIÉ
+   Le moteur de corrélation peut maintenant utiliser _id dans ses agrégations.
+   Vous pouvez relancer correlation_engine.py
+
+[SETTINGS] indices.id_field_data.enabled (persistent) = true
+
+============================================================

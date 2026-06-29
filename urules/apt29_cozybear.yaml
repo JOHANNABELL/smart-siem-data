@@ -1,0 +1,17 @@
+id: apt29-cozybear
+nom: "APT29 / CozyBear (MITRE T1078 / T1003 / T1059)"
+description: "Authentification inhabituelle + accès LSASS + PowerShell encodé en chaîne"
+type: sequentielle
+condition:
+  steps:
+    - field: "normalized_fields.process"
+      value: "powershell"
+    - field: "normalized_fields.process"
+      value: "lsass"
+fenetre_temporelle_s: 300
+mitre_tactic: "T1003 - OS Credential Dumping"
+mitre_technique_id: "T1003"
+niveau_alerte_genere: CRITICAL
+cve_references: []
+kill_chain_phase: "credential_access"
+active: true

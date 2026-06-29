@@ -1,0 +1,15 @@
+id: firewall-ad-correlation
+nom: "Activité suspecte AD derrière FW (MITRE T1078)"
+description: "Authentification AD échouée depuis IP traversant le firewall"
+type: seuil
+condition:
+  field: "log_type"
+  value: "auth_fail"
+  threshold: 10
+fenetre_temporelle_s: 120
+mitre_tactic: "T1078 - Valid Accounts"
+mitre_technique_id: "T1078"
+niveau_alerte_genere: HIGH
+cve_references: []
+kill_chain_phase: "initial_access"
+active: true

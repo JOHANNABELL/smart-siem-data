@@ -1,0 +1,15 @@
+id: shadowcopy-deletion
+nom: "Suppression de shadow copies (MITRE T1490)"
+description: "Exécution de vssadmin delete shadows / wbadmin delete / wmic shadowcopy delete"
+type: seuil
+condition:
+  field: "normalized_fields.process"
+  value: "vssadmin"
+  threshold: 1
+fenetre_temporelle_s: 60
+mitre_tactic: "T1490 - Inhibit System Recovery"
+mitre_technique_id: "T1490"
+niveau_alerte_genere: CRITICAL
+cve_references: []
+kill_chain_phase: "impact"
+active: true

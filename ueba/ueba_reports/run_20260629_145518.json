@@ -1,0 +1,43 @@
+{
+  "started_at": "2026-06-29T13:55:13.480855+00:00",
+  "processed": [],
+  "skipped": [
+    {
+      "entity": "david.palmer",
+      "reason": "seulement 2 jours"
+    }
+  ],
+  "errors": [
+    {
+      "entity": "jack.bauer",
+      "error": "erreur de syntaxe sur ou pr\u00e8s de \u00ab DO \u00bb"
+    },
+    {
+      "entity": "chloe.obrian",
+      "error": "erreur de syntaxe sur ou pr\u00e8s de \u00ab DO \u00bb"
+    },
+    {
+      "entity": "bill.buchanan",
+      "error": "erreur de syntaxe sur ou pr\u00e8s de \u00ab DO \u00bb"
+    },
+    {
+      "entity": "tony.almeida",
+      "error": "erreur de syntaxe sur ou pr\u00e8s de \u00ab DO \u00bb"
+    },
+    {
+      "entity": "srv-web-01",
+      "error": "erreur de syntaxe sur ou pr\u00e8s de \u00ab DO \u00bb"
+    },
+    {
+      "entity": "srv-db-01",
+      "error": "erreur de syntaxe sur ou pr\u00e8s de \u00ab DO \u00bb"
+    },
+    {
+      "entity": "srv-ad-01",
+      "error": "erreur de syntaxe sur ou pr\u00e8s de \u00ab DO \u00bb"
+    }
+  ],
+  "alerts_created": [],
+  "no_activity_today": [],
+  "ended_at": "2026-06-29T13:55:18.539822+00:00"
+}

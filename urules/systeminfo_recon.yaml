@@ -1,0 +1,15 @@
+id: systeminfo-recon
+nom: "Reconnaissance système (MITRE T1082)"
+description: "Exécution de systeminfo / hostname / ipconfig / whoami en chaîne (recon)"
+type: seuil
+condition:
+  field: "normalized_fields.process"
+  value: "systeminfo"
+  threshold: 1
+fenetre_temporelle_s: 60
+mitre_tactic: "T1082 - System Information Discovery"
+mitre_technique_id: "T1082"
+niveau_alerte_genere: INFO
+cve_references: []
+kill_chain_phase: "discovery"
+active: true

@@ -1,0 +1,17 @@
+id: lockbit3-ransomware
+nom: "LockBit 3.0 — Chiffrement + suppression shadow copies (MITRE T1486/T1490/T1485)"
+description: "Pic de créations de fichiers inhabituels ET suppression de shadow copies (vssadmin/wbadmin) en <5 min"
+type: sequentielle
+condition:
+  steps:
+    - field: "normalized_fields.process"
+      value: "vssadmin.exe"
+    - field: "log_type"
+      value: "filesystem"
+fenetre_temporelle_s: 300
+mitre_tactic: "T1486 - Data Encrypted for Impact"
+mitre_technique_id: "T1486"
+niveau_alerte_genere: CRITICAL
+cve_references: []
+kill_chain_phase: "impact"
+active: true

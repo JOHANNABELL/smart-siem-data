@@ -1,0 +1,16 @@
+id: anomaly_traffic_volume
+nom: Volume de trafic global anormal (Détection Statistique)
+description: Détecte une déviation statistique significative du volume global de logs par rapport à la baseline (Z-score).
+type: statistical
+condition:
+  z_score_threshold: 3.0
+  min_events: 10
+  baseline_window_s: 86400
+  bucket_interval_s: 3600
+fenetre_temporelle_s: 300
+mitre_tactic: exfiltration
+mitre_technique_id: T1020
+niveau_alerte_genere: HIGH
+cve_references: []
+kill_chain_phase: exfiltration
+active: true

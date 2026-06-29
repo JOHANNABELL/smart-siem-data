@@ -1,0 +1,81 @@
+C:\Users\HP\Desktop\UCAC-ICAM\X3\Projet Intégrateur\Data\venv\Lib\site-packages\requests\__init__.py:113: RequestsDependencyWarning: urllib3 (2.7.0) or chardet (7.4.3)/charset_normalizer (3.4.7) doesn't match a supported version!
+  warnings.warn(
+[OK] PostgreSQL connecté
+[OK] Elasticsearch 9.4.2
+=================================================================
+UEBA — Génération du dataset de test
+=================================================================
+
+  Profils normaux parfaits  : 3
+  Profils normaux élevés    : 3
+  Profils anomalies légères : 1
+  Profils anomalies graves  : 2
+  Anomalies à injecter      : 8
+
+[PG] Vérification / insertion des utilisateurs dans PostgreSQL...
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\UCAC-ICAM\X3\Projet Intégrateur\Data\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+  [OK PG] tony.almeida inséré (role=reader, is_active=FALSE)
+  [OK PG] kim.bauer inséré (role=reader, is_active=FALSE)
+  [OK PG] edgar.stiles inséré (role=reader, is_active=FALSE)
+  [OK PG] jack.bauer inséré (role=analyst, is_active=FALSE)
+  [OK PG] chloe.obrian inséré (role=analyst, is_active=FALSE)
+  [OK PG] bill.buchanan inséré (role=analyst, is_active=FALSE)
+  [OK PG] david.palmer inséré (role=reader, is_active=FALSE)
+  [OK PG] mandy.welles inséré (role=reader, is_active=FALSE)
+  [OK PG] aaron.pierce inséré (role=reader, is_active=FALSE)
+  9 utilisateurs traités dans PG
+
+[Phase 1] Génération du comportement normal...
+  tony.almeida           [perfectly_normal      ]   414 logs
+  kim.bauer              [perfectly_normal      ]   254 logs
+  edgar.stiles           [perfectly_normal      ]   552 logs
+  jack.bauer             [normal_high_activity  ]   961 logs
+  chloe.obrian           [normal_high_activity  ]  1322 logs
+  bill.buchanan          [normal_high_activity  ]   671 logs
+  david.palmer           [light_anomaly         ]   156 logs
+  mandy.welles           [heavy_anomaly         ]   292 logs
+  aaron.pierce           [heavy_anomaly         ]   393 logs
+
+[Phase 2] Injection des anomalies documentées...
+  ANO-001 [light     ] jack.bauer               5 logs — Connexion à 2h30 depuis IP Tor (185.220.101.5)
+  ANO-002 [heavy     ] david.palmer             1 logs — Export de 520 Mo (vs moyenne 0.5 Mo) — exfiltration probable
+  ANO-003 [heavy     ] chloe.obrian            25 logs — Accès à 25 serveurs distincts en 90 min (vs 4 habituels)
+  ANO-004 [heavy     ] bill.buchanan            1 logs — Création compte admin à 22h15 depuis IP inconnue (91.108.4.33)
+  ANO-005 [light     ] jack.bauer              55 logs — 55 échecs d'auth en 6 minutes (bruteforce interne)
+  ANO-006 [heavy     ] mandy.welles             5 logs — Connexion à 3h05 depuis IP Tor, accès base de données
+  ANO-007 [heavy     ] aaron.pierce            28 logs — 20 échecs d'auth puis accès à 8 nouveaux serveurs
+  ANO-008 [borderline] edgar.stiles             1 logs — Connecté à 6h45 (légèrement avant ses heures habituelles 7h)
+
+[Phase 3] Insertion de 5136 logs dans ES...
+  [WARN] 1 erreurs dans le batch 3
+
+[RÉSULTAT] 5135/5136 logs insérés dans siem-logs-2026.06
+
+=================================================================
+RAPPORT DU DATASET
+=================================================================
+  Utilisateur            Catégorie                Normal  Anomalie
+  -----------------------------------------------------------------
+  tony.almeida           perfectly_normal            414         0 ← témoin négatif
+  kim.bauer              perfectly_normal            254         0 ← témoin négatif
+  edgar.stiles           perfectly_normal            552         1 ← témoin négatif
+  jack.bauer             normal_high_activity        961        60
+  chloe.obrian           normal_high_activity       1322        25
+  bill.buchanan          normal_high_activity        671         1
+  david.palmer           light_anomaly               156         1
+  mandy.welles           heavy_anomaly               292         5
+  aaron.pierce           heavy_anomaly               393        28
+
+  NOTE ACADÉMIQUE :
+  Ces données sont synthétiques, basées sur les distributions du
+  CERT Insider Threat Dataset v6.2 (Carnegie Mellon University).
+  Référence : https://kilthub.cmu.edu/articles/dataset/CERT_Insider_Threat_Dataset
+
+  Pour des tests académiques rigoureux, combiner avec le vrai dataset CMU.
+
+  → Lancer ueba_worker.py pour démarrer la détection

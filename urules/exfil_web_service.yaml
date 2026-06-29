@@ -1,0 +1,15 @@
+id: exfil-web-service
+nom: "Exfiltration vers service web (MITRE T1567)"
+description: "Upload massif vers service cloud (mega.nz, dropbox, pastebin, gist)"
+type: seuil
+condition:
+  field: "normalized_fields.event_type"
+  value: "exfil_web"
+  threshold: 1
+fenetre_temporelle_s: 600
+mitre_tactic: "T1567 - Exfiltration Over Web Service"
+mitre_technique_id: "T1567"
+niveau_alerte_genere: CRITICAL
+cve_references: []
+kill_chain_phase: "exfiltration"
+active: true

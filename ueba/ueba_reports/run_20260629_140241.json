@@ -1,0 +1,43 @@
+{
+  "started_at": "2026-06-29T13:02:34.373119+00:00",
+  "processed": [],
+  "skipped": [
+    {
+      "entity": "bill.buchanan",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "david.palmer",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "tony.almeida",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "srv-db-01",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "srv-ad-01",
+      "reason": "seulement 4 jours"
+    }
+  ],
+  "errors": [
+    {
+      "entity": "jack.bauer",
+      "error": "la colonne \u00ab typical_accessed_systems \u00bb de la relation \u00ab ueba_profiles \u00bb n'existe pas"
+    },
+    {
+      "entity": "chloe.obrian",
+      "error": "la colonne \u00ab typical_accessed_systems \u00bb de la relation \u00ab ueba_profiles \u00bb n'existe pas"
+    },
+    {
+      "entity": "srv-web-01",
+      "error": "la colonne \u00ab typical_accessed_systems \u00bb de la relation \u00ab ueba_profiles \u00bb n'existe pas"
+    }
+  ],
+  "alerts_created": [],
+  "no_activity_today": [],
+  "ended_at": "2026-06-29T13:02:41.808093+00:00"
+}

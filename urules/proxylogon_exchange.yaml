@@ -1,0 +1,16 @@
+id: proxylogon-exchange
+nom: "ProxyLogon Exchange (MITRE T1190)"
+description: "Requêtes /ews/exchange.aspx inhabituelles ou erreurs 500/400 atypiques (CVE-2021-26855)"
+type: seuil
+condition:
+  field: "normalized_fields.uri"
+  value: "/ews/exchange.aspx"
+  threshold: 1
+fenetre_temporelle_s: 60
+mitre_tactic: "T1190 - Exploit Public-Facing Application"
+mitre_technique_id: "T1190"
+niveau_alerte_genere: CRITICAL
+cve_references:
+  - CVE-2021-26855
+kill_chain_phase: "initial_access"
+active: true

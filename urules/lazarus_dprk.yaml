@@ -1,0 +1,17 @@
+id: lazarus-dprk
+nom: "Lazarus / DPRK (MITRE T1485 / T1567)"
+description: "Suppression massive de fichiers couplée à un transfert sortant inhabituel (exfil + wipers)"
+type: sequentielle
+condition:
+  steps:
+    - field: "log_type"
+      value: "file_delete"
+    - field: "log_type"
+      value: "egress"
+fenetre_temporelle_s: 600
+mitre_tactic: "T1485 - Data Destruction"
+mitre_technique_id: "T1485"
+niveau_alerte_genere: CRITICAL
+cve_references: []
+kill_chain_phase: "impact"
+active: true

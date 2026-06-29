@@ -1,0 +1,15 @@
+id: ransomware-encryption-burst
+nom: "Chiffrement massif de fichiers (MITRE T1486)"
+description: "Pic de créations de fichiers avec extensions typiques ransomware (.encrypted, .lockbit, .akira, .wncry)"
+type: seuil
+condition:
+  field: "log_type"
+  value: "file_create"
+  threshold: 100
+fenetre_temporelle_s: 60
+mitre_tactic: "T1486 - Data Encrypted for Impact"
+mitre_technique_id: "T1486"
+niveau_alerte_genere: CRITICAL
+cve_references: []
+kill_chain_phase: "impact"
+active: true

@@ -1,0 +1,43 @@
+{
+  "started_at": "2026-06-29T13:44:14.624349+00:00",
+  "processed": [],
+  "skipped": [
+    {
+      "entity": "bill.buchanan",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "david.palmer",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "tony.almeida",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "srv-db-01",
+      "reason": "seulement 2 jours"
+    },
+    {
+      "entity": "srv-ad-01",
+      "reason": "seulement 4 jours"
+    }
+  ],
+  "errors": [
+    {
+      "entity": "jack.bauer",
+      "error": "il n'existe aucune contrainte unique ou contrainte d'exclusion correspondant \u00e0 la sp\u00e9cification ON CONFLICT"
+    },
+    {
+      "entity": "chloe.obrian",
+      "error": "il n'existe aucune contrainte unique ou contrainte d'exclusion correspondant \u00e0 la sp\u00e9cification ON CONFLICT"
+    },
+    {
+      "entity": "srv-web-01",
+      "error": "il n'existe aucune contrainte unique ou contrainte d'exclusion correspondant \u00e0 la sp\u00e9cification ON CONFLICT"
+    }
+  ],
+  "alerts_created": [],
+  "no_activity_today": [],
+  "ended_at": "2026-06-29T13:44:31.526362+00:00"
+}

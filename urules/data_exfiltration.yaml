@@ -1,0 +1,20 @@
+id: data-exfiltration-large-transfer
+nom: "Exfiltration — Transfert de données volumineux vers IP externe"
+description: |
+  Détecte un transfert de données inhabituellement volumineux vers une adresse IP
+  externe inconnue. Signature typique d'une exfiltration vers un serveur C2 ou
+  un service de stockage contrôlé par l'attaquant.
+  Référence : MITRE T1041 — Exfiltration Over C2 Channel
+type: seuil
+condition:
+  field: "event_action"
+  value: "large_outbound_transfer"
+  threshold: 3
+  group_by: "source_ip"
+fenetre_temporelle_s: 3600
+mitre_tactic: "TA0010"
+mitre_technique_id: "T1041"
+niveau_alerte_genere: CRITICAL
+confidence_score: 80
+kill_chain_phase: "exfiltration"
+active: true
