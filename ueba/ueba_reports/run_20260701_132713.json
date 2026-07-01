@@ -1,0 +1,43 @@
+{
+  "started_at": "2026-07-01T12:27:07.471515+00:00",
+  "processed": [],
+  "skipped": [
+    {
+      "entity": "david.palmer",
+      "reason": "seulement 2 jours"
+    }
+  ],
+  "errors": [
+    {
+      "entity": "jack.bauer",
+      "error": "BadRequestError(400, 'strict_dynamic_mapping_exception', '[1:15] mapping set to strict, dynamic introduction of [@timestamp] within [_doc] is not allowed')"
+    },
+    {
+      "entity": "chloe.obrian",
+      "error": "BadRequestError(400, 'strict_dynamic_mapping_exception', '[1:15] mapping set to strict, dynamic introduction of [@timestamp] within [_doc] is not allowed')"
+    },
+    {
+      "entity": "bill.buchanan",
+      "error": "BadRequestError(400, 'strict_dynamic_mapping_exception', '[1:15] mapping set to strict, dynamic introduction of [@timestamp] within [_doc] is not allowed')"
+    },
+    {
+      "entity": "tony.almeida",
+      "error": "BadRequestError(400, 'strict_dynamic_mapping_exception', '[1:15] mapping set to strict, dynamic introduction of [@timestamp] within [_doc] is not allowed')"
+    },
+    {
+      "entity": "srv-web-01",
+      "error": "BadRequestError(400, 'strict_dynamic_mapping_exception', '[1:15] mapping set to strict, dynamic introduction of [@timestamp] within [_doc] is not allowed')"
+    },
+    {
+      "entity": "srv-db-01",
+      "error": "BadRequestError(400, 'strict_dynamic_mapping_exception', '[1:15] mapping set to strict, dynamic introduction of [@timestamp] within [_doc] is not allowed')"
+    },
+    {
+      "entity": "srv-ad-01",
+      "error": "BadRequestError(400, 'strict_dynamic_mapping_exception', '[1:15] mapping set to strict, dynamic introduction of [@timestamp] within [_doc] is not allowed')"
+    }
+  ],
+  "alerts_created": [],
+  "no_activity_today": [],
+  "ended_at": "2026-07-01T12:27:13.529180+00:00"
+}

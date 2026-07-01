@@ -1,0 +1,356 @@
+# ============================================================
+# all_rules.yaml — Règles de corrélation Smart SIEM v2
+# ============================================================
+# CORRECTIONS P1-A appliquées :
+#   - ssh_auth_failure → login_failed   (valeur du simulateur)
+#   - ssh_auth_success → login_success  (valeur du simulateur)
+#   - AD event_action corrigé           (login_failed)
+# SUPPRESSIONS :
+#   - anomaly_traffic_volume : type "statistical" non implémenté
+#   - exfil-web-service : field "normalized_fields.event_type" inexistant
+# ============================================================
+
+# ── R1 : SSH Brute Force ─────────────────────────────────────
+id: brute-force-ssh
+nom: "Brute Force SSH (MITRE T1110)"
+description: |
+  5+ login_failed depuis la même IP en 60 secondes.
+type: seuil
+condition:
+  event_action: "login_failed"
+  group_by: "source_ip"
+  threshold: 5
+fenetre_temporelle_s: 60
+mitre_tactic: "TA0001"
+mitre_technique_id: "T1110"
+niveau_alerte_genere: HIGH
+confidence_score: 85
+active: true
+
+---
+
+# ── R2 : Port Scan ───────────────────────────────────────────
+id: port-scan-detection
+nom: "Scan de ports réseau (MITRE T1046)"
+description: |
+  20+ ports de destination DISTINCTS bloqués par le firewall
+  depuis la même IP en 60s. Détection par cardinalité (fan-out).
+type: seuil
+condition:
+  event_action: "connection_blocked"
+  group_by: "source_ip"
+  threshold: 20
+  count_type: "cardinality"
+  cardinality_field: "dest_port"
+fenetre_temporelle_s: 60
+mitre_tactic: "TA0007"
+mitre_technique_id: "T1046"
+niveau_alerte_genere: WARNING
+confidence_score: 78
+active: true
+
+---
+
+# ── R3 : SSH Lateral Movement ─────────────────────────────────
+id: ssh-lateral-movement
+nom: "Mouvement Latéral SSH (MITRE T1021.004)"
+description: |
+  Séquence login_success → file_read depuis la même IP interne en 300s.
+type: séquence
+condition:
+  sequence:
+    - "login_success"
+    - "file_read"
+  group_by: "source_ip"
+  filter:
+    is_internal_src: true
+  max_step_gap_seconds: 280
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0008"
+mitre_technique_id: "T1021"
+niveau_alerte_genere: CRITICAL
+confidence_score: 82
+active: true
+
+---
+
+# ── R4 : Data Exfiltration ────────────────────────────────────
+id: data-exfiltration
+nom: "Exfiltration de données (MITRE T1041)"
+description: |
+  3+ large_outbound_transfer depuis la même IP en 1 heure.
+type: seuil
+condition:
+  event_action: "large_outbound_transfer"
+  group_by: "source_ip"
+  threshold: 3
+fenetre_temporelle_s: 3600
+mitre_tactic: "TA0010"
+mitre_technique_id: "T1041"
+niveau_alerte_genere: CRITICAL
+confidence_score: 78
+active: true
+
+---
+
+# ── R5 : Firewall + AD Correlation ───────────────────────────
+id: firewall-ad-correlation
+nom: "Corrélation Firewall + AD (MITRE T1078)"
+description: |
+  Même IP bloquée par le firewall ET échec auth AD en 5 minutes.
+  CORRECTION : active_directory event_action = login_failed (simulateur).
+type: composite
+condition:
+  type: "cross_source"
+  sources:
+    - "firewall"
+    - "active_directory"
+  events:
+    firewall: "connection_blocked"
+    active_directory: "login_failed"
+  group_by: "source_ip"
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0001"
+mitre_technique_id: "T1078"
+niveau_alerte_genere: HIGH
+confidence_score: 70
+active: true
+
+---
+
+# ── R6 : Public App Exploit ───────────────────────────────────
+id: public-app-exploit
+nom: "Public-Facing App Exploit (MITRE T1190)"
+description: |
+  5+ http_exploit_attempt depuis la même IP en 60s.
+type: seuil
+condition:
+  event_action: "http_exploit_attempt"
+  group_by: "source_ip"
+  threshold: 5
+fenetre_temporelle_s: 60
+mitre_tactic: "TA0001"
+mitre_technique_id: "T1190"
+niveau_alerte_genere: HIGH
+confidence_score: 80
+active: true
+
+---
+
+# ── R7 : SMB Lateral Movement ────────────────────────────────
+id: smb-lateral-movement
+nom: "SMB Lateral Movement (MITRE T1021.002)"
+description: |
+  3+ connection_allowed vers port 445 depuis la même IP en 300s.
+  Filtre composite : event_action + dest_port.
+type: seuil
+condition:
+  event_action: "connection_allowed"
+  dest_port: 445
+  group_by: "source_ip"
+  threshold: 3
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0008"
+mitre_technique_id: "T1021"
+niveau_alerte_genere: HIGH
+confidence_score: 78
+active: true
+
+---
+
+# ── R8 : RDP Lateral Movement ────────────────────────────────
+id: rdp-lateral-movement
+nom: "RDP Lateral Movement (MITRE T1021.001)"
+description: |
+  3+ rdp_connection vers port 3389 depuis la même IP en 600s.
+type: seuil
+condition:
+  event_action: "rdp_connection"
+  dest_port: 3389
+  group_by: "source_ip"
+  threshold: 3
+fenetre_temporelle_s: 600
+mitre_tactic: "TA0008"
+mitre_technique_id: "T1021"
+niveau_alerte_genere: HIGH
+confidence_score: 80
+active: true
+
+---
+
+# ── R9 : WMI Remote Execution ────────────────────────────────
+id: wmi-remote-execution
+nom: "WMI Remote Execution (MITRE T1047)"
+description: |
+  Séquence wmi_exec → process_started depuis la même IP en 120s.
+type: séquence
+condition:
+  sequence:
+    - "wmi_exec"
+    - "process_started"
+  group_by: "source_ip"
+fenetre_temporelle_s: 120
+mitre_tactic: "TA0008"
+mitre_technique_id: "T1047"
+niveau_alerte_genere: HIGH
+confidence_score: 82
+active: true
+
+---
+
+# ── R10 : DNS Tunnel ─────────────────────────────────────────
+id: dns-tunnel-exfiltration
+nom: "DNS Tunnel Exfiltration (MITRE T1048)"
+description: |
+  200+ dns_query depuis la même IP en 60s.
+type: seuil
+condition:
+  event_action: "dns_query"
+  group_by: "source_ip"
+  threshold: 200
+fenetre_temporelle_s: 60
+mitre_tactic: "TA0010"
+mitre_technique_id: "T1048"
+niveau_alerte_genere: HIGH
+confidence_score: 75
+active: true
+
+---
+
+# ── R11 : HTTP POST Exfiltration ─────────────────────────────
+id: http-post-exfiltration
+nom: "HTTP POST Exfiltration (MITRE T1567)"
+description: |
+  50+ http_post depuis la même IP en 300s.
+type: seuil
+condition:
+  event_action: "http_post"
+  group_by: "source_ip"
+  threshold: 50
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0010"
+mitre_technique_id: "T1567"
+niveau_alerte_genere: HIGH
+confidence_score: 72
+active: true
+
+---
+
+# ── R12 : Cloud Upload Exfiltration ──────────────────────────
+id: cloud-upload-exfiltration
+nom: "Cloud Storage Exfiltration (MITRE T1567.002)"
+description: |
+  5+ cloud_upload par le même utilisateur en 3600s.
+  group_by username : exfiltration cloud liée au compte.
+type: seuil
+condition:
+  event_action: "cloud_upload"
+  group_by: "username"
+  threshold: 5
+fenetre_temporelle_s: 3600
+mitre_tactic: "TA0010"
+mitre_technique_id: "T1567"
+niveau_alerte_genere: HIGH
+confidence_score: 70
+active: true
+
+---
+
+# ── R13 : ICMP Tunnel ────────────────────────────────────────
+id: icmp-tunnel-exfiltration
+nom: "ICMP Tunnel Exfiltration (MITRE T1095)"
+description: |
+  100+ icmp_flood depuis la même IP en 60s.
+type: seuil
+condition:
+  event_action: "icmp_flood"
+  group_by: "source_ip"
+  threshold: 100
+fenetre_temporelle_s: 60
+mitre_tactic: "TA0010"
+mitre_technique_id: "T1095"
+niveau_alerte_genere: HIGH
+confidence_score: 73
+active: true
+
+---
+
+# ── R14 : Privilege Escalation ───────────────────────────────
+id: privilege-escalation
+nom: "Élévation de privilèges (MITRE T1068)"
+description: |
+  1+ privilege_escalation par compte non whitelisté en 300s.
+type: seuil
+condition:
+  event_action: "privilege_escalation"
+  group_by: "username"
+  threshold: 1
+  exclude_usernames:
+    - "root"
+    - "ansible"
+    - "deploy"
+    - "backup_agent"
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0004"
+mitre_technique_id: "T1068"
+niveau_alerte_genere: CRITICAL
+confidence_score: 88
+active: true
+
+---
+
+# ── R15 : Kerberoasting ──────────────────────────────────────
+id: kerberoasting
+nom: "Kerberoasting (MITRE T1558.003)"
+description: |
+  10+ kerberos_tgs_request depuis la même IP en 30s.
+type: seuil
+condition:
+  event_action: "kerberos_tgs_request"
+  group_by: "source_ip"
+  threshold: 10
+fenetre_temporelle_s: 30
+mitre_tactic: "TA0006"
+mitre_technique_id: "T1558"
+niveau_alerte_genere: HIGH
+confidence_score: 85
+active: true
+
+---
+
+# ── R16 : Golden Ticket ──────────────────────────────────────
+id: golden-ticket
+nom: "Golden Ticket (MITRE T1558.001)"
+description: |
+  20+ kerberos_tgt_request par le même username en 60s.
+type: seuil
+condition:
+  event_action: "kerberos_tgt_request"
+  group_by: "username"
+  threshold: 20
+fenetre_temporelle_s: 60
+mitre_tactic: "TA0006"
+mitre_technique_id: "T1558"
+niveau_alerte_genere: CRITICAL
+confidence_score: 90
+active: true
+
+---
+
+# ── R17 : Pass-the-Hash ──────────────────────────────────────
+id: pass-the-hash
+nom: "Pass-the-Hash (MITRE T1550.002)"
+description: |
+  Séquence credential_dump → login_success depuis la même IP en 600s.
+type: séquence
+condition:
+  sequence:
+    - "credential_dump"
+    - "login_success"
+  group_by: "source_ip"
+fenetre_temporelle_s: 600
+mitre_tactic: "TA0008"
+mitre_technique_id: "T1550"
+niveau_alerte_genere: CRITICAL
+confidence_score: 80
+active: true

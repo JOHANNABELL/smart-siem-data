@@ -1,0 +1,30 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# RÈGLE : SSH Lateral Movement — T1021.004
+# CORRECTIONS APPLIQUÉES :
+#   - "login_success" → "ssh_auth_success" (valeur normalisée du document HTML)
+#   - Ajout filtre is_internal_src: true (distingue pivot interne vs accès externe)
+#   - Ajout use_eql: true → utilise l'API EQL native d'ES (plus performant)
+# ─────────────────────────────────────────────────────────────────────────────
+id: ssh-lateral-movement
+nom: "Mouvement Latéral SSH (MITRE T1021.004)"
+description: |
+  Détecte un mouvement latéral SSH : connexion réussie depuis un hôte
+  interne vers un autre hôte interne (is_internal_src=true), suivie
+  d'un accès fichier sensible. Signature classique du pivoting.
+  Référence : MITRE T1021.004 — Remote Services (SSH).
+type: séquence
+condition:
+  sequence:
+    - "ssh_auth_success"
+    - "file_read"
+  group_by: "source_ip"
+  filter:
+    is_internal_src: true
+  use_eql: true
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0008"
+mitre_technique_id: "T1021"
+niveau_alerte_genere: CRITICAL
+confidence_score: 82
+kill_chain_phase: "lateral_movement"
+active: true

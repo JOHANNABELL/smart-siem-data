@@ -1,0 +1,32 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# RÈGLE : Firewall + AD Correlation — T1078 (composite/cross-source)
+# CORRECTIONS APPLIQUÉES :
+#   - type "seuil" → type "composite" avec sous-type "cross_source"
+#   - Ajout de la structure sources/events correcte
+#   - Fenêtre étendue à 14400s (4h) selon le document HTML
+#     (les attaques lentes espacent les signaux de plusieurs heures)
+# ─────────────────────────────────────────────────────────────────────────────
+id: firewall-ad-correlation
+nom: "Corrélation Firewall + AD (MITRE T1078)"
+description: |
+  Détecte une tentative de contournement périmétrique : même IP bloquée
+  par le firewall qui tente ensuite de s'authentifier sur l'AD.
+  Corrélation inter-sources sur 4h pour couvrir les attaques lentes.
+  Référence : MITRE T1078 — Valid Accounts.
+type: composite
+condition:
+  type: "cross_source"
+  sources:
+    - "firewall"
+    - "active_directory"
+  events:
+    firewall: "connection_blocked"
+    active_directory: "ssh_auth_failure"
+  group_by: "source_ip"
+fenetre_temporelle_s: 14400
+mitre_tactic: "TA0001"
+mitre_technique_id: "T1078"
+niveau_alerte_genere: HIGH
+confidence_score: 72
+kill_chain_phase: "initial_access"
+active: true

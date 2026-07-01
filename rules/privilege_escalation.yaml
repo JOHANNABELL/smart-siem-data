@@ -1,0 +1,25 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# RÈGLE : Privilege Escalation — T1068
+# CORRECTIONS APPLIQUÉES :
+#   - "normalized_fields.process: sudo" → "event_action: privilege_escalation"
+#   - group_by: username (l'entité suspecte est le COMPTE, pas l'IP)
+#   - Seuil réduit à 1 (toute escalade de privilèges non autorisée est suspecte)
+# ─────────────────────────────────────────────────────────────────────────────
+id: privilege-escalation
+nom: "Élévation de privilèges (MITRE T1068)"
+description: |
+  Détecte une escalade de privilèges : commande sudo aboutissant à euid=0,
+  exploitation locale, ou token impersonation.
+  Référence : MITRE T1068 — Exploitation for Privilege Escalation.
+type: seuil
+condition:
+  event_action: "privilege_escalation"
+  group_by: "username"
+  threshold: 1
+fenetre_temporelle_s: 300
+mitre_tactic: "TA0004"
+mitre_technique_id: "T1068"
+niveau_alerte_genere: CRITICAL
+confidence_score: 88
+kill_chain_phase: "privilege_escalation"
+active: true

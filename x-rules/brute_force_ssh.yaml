@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# RÈGLE : Brute Force SSH — T1110
+# CORRECTIONS APPLIQUÉES :
+#   - field/value → event_action direct (valeur normalisée post-pipeline)
+#   - "Failed password" → "ssh_auth_failure" (convention ECS du document HTML)
+#   - Ajout de group_by explicite
+#   - Ajout de confidence_score
+# ─────────────────────────────────────────────────────────────────────────────
+id: brute-force-ssh
+nom: "Brute Force SSH (MITRE T1110)"
+description: |
+  Détecte les attaques brute force SSH : 5+ échecs d'authentification
+  depuis la même IP en 60 secondes. Couvre Password Guessing, Spraying,
+  Credential Stuffing. Référence : MITRE T1110.
+type: seuil
+condition:
+  event_action: "ssh_auth_failure"
+  group_by: "source_ip"
+  threshold: 5
+fenetre_temporelle_s: 60
+mitre_tactic: "TA0001"
+mitre_technique_id: "T1110"
+niveau_alerte_genere: HIGH
+confidence_score: 85
+kill_chain_phase: "credential_access"
+active: true

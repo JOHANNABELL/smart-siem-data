@@ -1,0 +1,25 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# RÈGLE : Data Exfiltration — T1041
+# CORRECTIONS APPLIQUÉES :
+#   - Structure condition clarifiée (event_action direct)
+#   - Seuil augmenté à 3 (correct)
+#   - Ajout confidence_score
+# ─────────────────────────────────────────────────────────────────────────────
+id: data-exfiltration
+nom: "Exfiltration de données (MITRE T1041)"
+description: |
+  Détecte une exfiltration : 3+ transferts volumineux vers la même IP
+  externe en 1 heure. Signature typique d'un C2 channel.
+  Référence : MITRE T1041 — Exfiltration Over C2 Channel.
+type: seuil
+condition:
+  event_action: "large_outbound_transfer"
+  group_by: "source_ip"
+  threshold: 3
+fenetre_temporelle_s: 3600
+mitre_tactic: "TA0010"
+mitre_technique_id: "T1041"
+niveau_alerte_genere: CRITICAL
+confidence_score: 78
+kill_chain_phase: "exfiltration"
+active: true

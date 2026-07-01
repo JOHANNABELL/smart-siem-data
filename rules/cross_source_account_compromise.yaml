@@ -1,0 +1,30 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# RÈGLE : Cross-Source Account Compromise (composite/cross-source)
+# CORRECTIONS APPLIQUÉES :
+#   - Structure steps/entity_field → structure sources/events standard
+#   - type "cross_source" → type "composite" avec sous-type "cross_source"
+#   - Définition explicite des event_actions par source
+# ─────────────────────────────────────────────────────────────────────────────
+id: cross-source-account-compromise
+nom: "Compromission de compte multi-sources (MITRE T1078)"
+description: |
+  Détecte une compromission de compte en corrélant des signaux de plusieurs
+  sources : échec auth + anomalie endpoint sur le même username en 10 minutes.
+  Référence : MITRE T1078 — Valid Accounts.
+type: composite
+condition:
+  type: "cross_source"
+  sources:
+    - "auth"
+    - "endpoint"
+  events:
+    auth: "ssh_auth_failure"
+    endpoint: "privilege_escalation"
+  group_by: "username"
+fenetre_temporelle_s: 600
+mitre_tactic: "TA0006"
+mitre_technique_id: "T1078"
+niveau_alerte_genere: CRITICAL
+confidence_score: 77
+kill_chain_phase: "credential_access"
+active: true
