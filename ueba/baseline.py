@@ -248,18 +248,29 @@ async def save_profile_to_es(
         # Profil comportemental complet avec statistiques par feature
         "baseline_stats":        baseline_stats,
 
+        "typical_login_hours": {
+                "avg_hour": baseline_stats.get("login_hour_mean", {}).get("mean", 12.0),
+            },
         # Machines habituellement accédées (pour détecter new_system_access)
         "typical_accessed_systems": typical_hosts,
 
         # Score de risque actuel (0 = normal, 100 = anomalie certaine)
         "risk_score_current":    risk_score,
 
-        # Historique des anomalies détectées (tableau de documents nested)
-        "anomalies_detected":    anomalies_detected or [],
+        "anomalies_detected": [
+            {
+                "detected_at": a.get("detected_at"),
+                "type":        a.get("feature"),
+                "description": a.get("explanation"),
+                "severity":    "HIGH" if abs(a.get("z_score", 0)) >= 3 else "MEDIUM",
+                "delta":       a.get("z_score"),
+            }
+            for a in (anomalies_detected or [])
+        ],
 
         # Métadonnées
         "avg_daily_events":      baseline_stats.get("login_count_per_day", {}).get("mean", 0),
-        "avg_daily_data_mb":     baseline_stats.get("data_volume_mb", {}).get("mean", 0),
+        "avg_daily_data_volume_mb":     baseline_stats.get("data_volume_mb", {}).get("mean", 0),
         "last_updated":          datetime.now(timezone.utc).isoformat(),
     }
 

@@ -1,0 +1,22 @@
+{
+  "started_at": "2026-07-02T12:10:52.088611+00:00",
+  "processed": [],
+  "skipped": [
+    {
+      "entity": "david.palmer",
+      "reason": "seulement 2 jours"
+    }
+  ],
+  "errors": [],
+  "alerts_created": [],
+  "no_activity_today": [
+    "jack.bauer",
+    "chloe.obrian",
+    "bill.buchanan",
+    "tony.almeida",
+    "srv-web-01",
+    "srv-db-01",
+    "srv-ad-01"
+  ],
+  "ended_at": "2026-07-02T12:10:59.639451+00:00"
+}

@@ -1,0 +1,32 @@
+{
+  "started_at": "2026-07-01T13:10:24.770582+00:00",
+  "processed": [
+    {
+      "entity": "srv-ad-01",
+      "entity_type": "machine",
+      "risk_score": 60,
+      "alert_level": "NORMAL",
+      "anomalous_features": [],
+      "alert_created": false,
+      "alert_id": null,
+      "historical_days": 15
+    }
+  ],
+  "skipped": [
+    {
+      "entity": "david.palmer",
+      "reason": "seulement 2 jours"
+    }
+  ],
+  "errors": [],
+  "alerts_created": [],
+  "no_activity_today": [
+    "jack.bauer",
+    "chloe.obrian",
+    "bill.buchanan",
+    "tony.almeida",
+    "srv-web-01",
+    "srv-db-01"
+  ],
+  "ended_at": "2026-07-01T13:10:28.972499+00:00"
+}
